@@ -10,6 +10,9 @@ package cranstonm;
 /**
  * Class DieNotRolledException
  */
-public class DieNotRolledException  {
-
+public class DieNotRolledException extends RuntimeException {
+    @Override
+    public String getMessage() {
+        return "Value not in expected range.";
+    }
 }
