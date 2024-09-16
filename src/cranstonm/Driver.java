@@ -29,8 +29,19 @@ public class Driver {
         Find the result that appeared most frequently during all the rolls
         Print the results of the experiment
         **/
-        int[] userInput = getInput(); // numDice, numSides, numTimes rolled
-        createDie(userInput[0], userInput[1]);
+
+        // Int array: i[0]numDice, i[1]numSides, i[2]numTimes
+        int[] userInput = getInput();
+        int numDice = userInput[0];
+        int numSides = userInput[1];
+        int numTimes = userInput[2];
+        // Die array length numDice: Die(numSides)
+        Die[] userDice = createDie(numDice, numSides);
+        // Rolls the dice, sums their value, repeat for numRolls, return array of rolled values
+        int[] rollingDice = rollDice(userDice, numSides, numTimes);
+        // largest value rolled in set of values
+        int largest = findMax(rollingDice);
+
 
     }
 
@@ -43,7 +54,7 @@ public class Driver {
                 Enter configuration:
                 """);
         int[] intInput = new int[3];
-        int recieved = 0;
+        int received = 0;
         try (Scanner read = new Scanner(System.in)) {
             String text = read.nextLine();
             String[] strInput = text.split(" ");
@@ -52,11 +63,11 @@ public class Driver {
                     throw new IllegalArgumentException();
                 } else {
                     intInput[i] = Integer.parseInt(strInput[i]);
-                    recieved++;
+                    received++;
                 }
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid input: Expected 3 values but only received " + recieved);
+            System.out.println("Invalid input: Expected 3 values but only received " + received);
         } catch (InputMismatchException e) {
             System.out.println("Invalid input: All values must be whole numbers.");
         }
@@ -71,27 +82,35 @@ public class Driver {
         return dice;
     }
 
-    private int[] rollDice(Die[] dice, int numSides, int numRolls) {
-        /**
-         * This method will roll all the dice, total up the values,
-         * and add to that value's total.
-         * It will do this as many times as the user specifies.
-         */
+    private static int[] rollDice(Die[] dice, int numSides, int numRolls) {
+        int[] trials = new int[numRolls];
+        for (int i = 0; i < numRolls; i++) {
+            for (int j = 0; j < dice.length; i++) {
+                dice[j].roll();
+                trials[i] = dice[j].getCurrentValue();
+            }
+        }
+        return trials;
     }
-    private int findMax(int[] rolls) {
-        /**
-         * This method will take the array that
-         * contains the rolling statistics
-         * and find and return the largest count.
-         * Which value has the largest count is not
-         * important here, just what the count is.
-         */
+
+    private static int findMax(int[] rolls) {
+        int longest = rolls[0];
+        for (int roll : rolls) {
+            if (roll > longest) {
+                longest = roll;
+            }
+        }
+        return longest;
     }
-    private void report(int numDice, int[] rolls, int max) {
+
+    private static void report(int numDice, int[] rolls, int max) {
         /**
          * This method will print the results as a
          * horizontal bar chart using asterisks.
          * See below for more details
          */
+
+
     }
+
 }
