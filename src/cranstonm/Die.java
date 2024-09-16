@@ -16,11 +16,11 @@ public class Die {
     /**
      * minimum number of sides on the dice
      */
-    public final int MIN_SIDES = 2;
+    public final int minSides = 2;
     /**
      * maximum number of sides on the dice
      */
-    public final int MAX_SIDES = 10;
+    public final int maxSides = 10;
     private int currentValue;
     private int numSides;
     private Random rand = new Random();
@@ -31,7 +31,7 @@ public class Die {
      */
     public Die(int numSides) {
         try {
-            if (MIN_SIDES > numSides || numSides > MAX_SIDES) {
+            if (minSides > numSides || numSides > maxSides) {
                 throw new IllegalArgumentException();
             }
             this.numSides = numSides;
