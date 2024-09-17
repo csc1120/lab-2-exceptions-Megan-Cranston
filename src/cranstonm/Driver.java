@@ -13,14 +13,6 @@ import java.util.Scanner;
  * Class Driver
  */
 public class Driver {
-    /**
-     * final int minDice is 2
-     */
-    public static final int MIN_DICE = 2;
-    /**
-     * final int maxDice is 10
-     */
-    public static final int MAX_DICE = 10;
 
     public static void main(String[] args) {
         int[] userInput = getInput();
@@ -54,7 +46,9 @@ public class Driver {
                 for (int i = 0; i < 3; i++) {
                     intInput[i] = Integer.parseInt(strInput[i]);
                 }
-                if (intInput[0] < MIN_DICE || intInput[0] > MAX_DICE) {
+                final int minDice = 2;
+                final int maxDice = 10;
+                if (intInput[0] < minDice || intInput[0] > maxDice) {
                     throw new IllegalArgumentException("Bad die creation: " +
                             "Illegal number of dice: " + intInput[0]);
                 }

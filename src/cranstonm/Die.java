@@ -13,17 +13,9 @@ import java.util.Random;
  * Class Die
  */
 public class Die {
-    /**
-     * minimum number of sides on the dice
-     */
-    public final int minSides = 2;
-    /**
-     * maximum number of sides on the dice
-     */
-    public final int maxSides = 10;
     private int currentValue;
     private int numSides;
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     /**
      * Die Constructor
@@ -31,6 +23,8 @@ public class Die {
      */
     public Die(int numSides) {
         try {
+            final int maxSides = 10;
+            final int minSides = 2;
             if (minSides > numSides || numSides > maxSides) {
                 throw new IllegalArgumentException();
             }
