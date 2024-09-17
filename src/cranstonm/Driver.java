@@ -24,44 +24,43 @@ public class Driver {
     public static final int MAX_DICE = 10;
 
     public static void main(String[] args) {
-        // Int array: i[0]numDice, i[1]numSides, i[2]numTimes
         int[] userInput = getInput();
-        int numDice = userInput[0];
-        int numSides = userInput[1];
-        int numTimes = userInput[2];
-        // Die array length numDice: Die(numSides)
-        Die[] userDice = createDie(numDice, numSides);
-        // Rolls the dice, sums their value, repeat for numRolls, return array of rolled values
-        int[] rollingDice = rollDice(userDice, numSides, numTimes);
-        // largest value rolled in set of values
+        Die[] userDice = createDie(userInput[0], userInput[1]);
+        int[] rollingDice = rollDice(userDice, userInput[1], userInput[2]);
         int largest = findMax(rollingDice);
-        // print out results of Dice Rolls
         report(userInput[0], rollingDice, largest);
-
     }
 
     private static int[] getInput() {
+        int[] intInput = new int[3];
         System.out.print("""
                 Please enter the number of dice to roll, how many sides the dice have,
                 and how many rolls to complete, separating the values by a space.
                 Example: "2 6 1000"
                 
                 Enter configuration:""");
-        int[] intInput = new int[3];
-        int received = 0;
         try (Scanner read = new Scanner(System.in)) {
+            // read values into String array separated by " "
             String text = read.nextLine();
             String[] strInput = text.split(" ");
+            // check for 3 arguments, turn string to int
             for (int i = 0; i < 3; i++) {
                 if (strInput[i] == null) {
-                    throw new IllegalArgumentException();
+                    // not 3 arguments, throw exception
+                    throw new IllegalArgumentException("Invalid input: " +
+                            "Expected 3 values but only received " + i);
                 } else {
+                    // 3 arguments, convert string to int
                     intInput[i] = Integer.parseInt(strInput[i]);
-                    received++;
                 }
             }
+            // check if dice value is valid
+            if (intInput[0] < MIN_DICE || intInput[0] > MAX_DICE) {
+                throw new IllegalArgumentException("Bad die creation: " +
+                        "Illegal number of dice: " + intInput[0]);
+            }
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid input: Expected 3 values but only received " + received);
+            System.out.println(e.getMessage());
         } catch (InputMismatchException e) {
             System.out.println("Invalid input: All values must be whole numbers.");
         }
@@ -102,7 +101,7 @@ public class Driver {
 
     private static void report(int numDice, int[] rolls, int max) {
         final int scale = max/10;
-        int numStars = 0;
+        int numStars;
         for (int i = 0; i < rolls.length; i++) {
             System.out.printf("%-2s:%-9s", numDice+i, rolls[i]);
             numStars = rolls[i] / scale;
