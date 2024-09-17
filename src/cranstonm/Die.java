@@ -46,6 +46,7 @@ public class Die {
      * @return tempVal which is the last value of the dice
      */
     public int getCurrentValue() {
+        roll();
         int tempVal = 0;
         try {
             if (currentValue > numSides || currentValue < 1) {

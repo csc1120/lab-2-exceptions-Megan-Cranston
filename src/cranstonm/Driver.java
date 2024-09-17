@@ -15,21 +15,15 @@ import java.util.Scanner;
  */
 public class Driver {
     /**
-     *
+     * final int minDice is 2
      */
-    public final int minDice = 2;
-    public final int maxDice = 10;
-    public static void main(String[] args) {
-        /**
-        Get input from the user regarding how many dice will be rolled,
-         how many sides the dice will have, and how many times the dice will be rolled.
-        Store the results of the user input in an array
-        Create the dice described in the user input
-        Roll all the dice and store the result as many times as the user has requested
-        Find the result that appeared most frequently during all the rolls
-        Print the results of the experiment
-        **/
+    public static final int MIN_DICE = 2;
+    /**
+     * final int maxDice is 10
+     */
+    public static final int MAX_DICE = 10;
 
+    public static void main(String[] args) {
         // Int array: i[0]numDice, i[1]numSides, i[2]numTimes
         int[] userInput = getInput();
         int numDice = userInput[0];
@@ -41,7 +35,8 @@ public class Driver {
         int[] rollingDice = rollDice(userDice, numSides, numTimes);
         // largest value rolled in set of values
         int largest = findMax(rollingDice);
-
+        // print out results of Dice Rolls
+        report(userInput[0], rollingDice, largest);
 
     }
 
@@ -51,8 +46,7 @@ public class Driver {
                 and how many rolls to complete, separating the values by a space.
                 Example: "2 6 1000"
                 
-                Enter configuration:
-                """);
+                Enter configuration:""");
         int[] intInput = new int[3];
         int received = 0;
         try (Scanner read = new Scanner(System.in)) {
@@ -83,19 +77,22 @@ public class Driver {
     }
 
     private static int[] rollDice(Die[] dice, int numSides, int numRolls) {
-        int[] trials = new int[numRolls];
+        int[] value = new int[numSides*dice.length - (dice.length-1)];
+        int total = 0;
         for (int i = 0; i < numRolls; i++) {
-            for (int j = 0; j < dice.length; i++) {
-                dice[j].roll();
-                trials[i] = dice[j].getCurrentValue();
+            for (Die die : dice) {
+                total += die.getCurrentValue();
             }
+            value[total-dice.length]++;
+            total = 0;
         }
-        return trials;
+        return value;
     }
 
     private static int findMax(int[] rolls) {
         int longest = rolls[0];
-        for (int roll : rolls) {
+        for (int i = 0; i < rolls.length-1; i++) {
+            int roll = rolls[i];
             if (roll > longest) {
                 longest = roll;
             }
@@ -104,13 +101,16 @@ public class Driver {
     }
 
     private static void report(int numDice, int[] rolls, int max) {
-        /**
-         * This method will print the results as a
-         * horizontal bar chart using asterisks.
-         * See below for more details
-         */
-
-
+        final int scale = max/10;
+        int numStars = 0;
+        for (int i = 0; i < rolls.length; i++) {
+            System.out.printf("%-2s:%-9s", numDice+i, rolls[i]);
+            numStars = rolls[i] / scale;
+            for (int j = 0; j < numStars; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
     }
 
 }
