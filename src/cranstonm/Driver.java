@@ -7,7 +7,6 @@
  */
 package cranstonm;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -32,38 +31,42 @@ public class Driver {
     }
 
     private static int[] getInput() {
+        boolean validate = false;
         int[] intInput = new int[3];
-        System.out.print("""
-                Please enter the number of dice to roll, how many sides the dice have,
-                and how many rolls to complete, separating the values by a space.
-                Example: "2 6 1000"
-                
-                Enter configuration:""");
-        try (Scanner read = new Scanner(System.in)) {
-            // read values into String array separated by " "
-            String text = read.nextLine();
-            String[] strInput = text.split(" ");
-            // check for 3 arguments, turn string to int
-            for (int i = 0; i < 3; i++) {
-                if (strInput[i] == null) {
-                    // not 3 arguments, throw exception
+        do {
+            System.out.print("""
+                    Please enter the number of dice to roll, how many sides the dice have,
+                    and how many rolls to complete, separating the values by a space.
+                    Example: "2 6 1000"
+                    
+                    Enter configuration:""");
+            Scanner read = new Scanner(System.in);
+            try {
+                // read values into String array separated by " "
+                String text = read.nextLine();
+                String[] strInput = text.split(" ");
+                // check if 3 values were entered
+                if (strInput.length != 3) {
                     throw new IllegalArgumentException("Invalid input: " +
-                            "Expected 3 values but only received " + i);
-                } else {
-                    // 3 arguments, convert string to int
+                            "Expected 3 values but only received " + strInput.length);
+                }
+                // turn string to int
+                for (int i = 0; i < 3; i++) {
                     intInput[i] = Integer.parseInt(strInput[i]);
                 }
+                if (intInput[0] < MIN_DICE || intInput[0] > MAX_DICE) {
+                    throw new IllegalArgumentException("Bad die creation: " +
+                            "Illegal number of dice: " + intInput[0]);
+                }
+                // no errors thrown, data has been validated
+                validate = true;
+            } catch (NumberFormatException e){
+                System.err.println("Invalid input: All values must be whole numbers.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
-            // check if dice value is valid
-            if (intInput[0] < MIN_DICE || intInput[0] > MAX_DICE) {
-                throw new IllegalArgumentException("Bad die creation: " +
-                        "Illegal number of dice: " + intInput[0]);
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input: All values must be whole numbers.");
-        }
+            read.reset();
+        } while (!validate);
         return intInput;
     }
 
