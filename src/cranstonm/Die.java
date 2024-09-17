@@ -3,7 +3,7 @@
  * Lab 2 - Exceptions
  * Die class
  * Name: Megan Cranston
- * Last Updated: 9/12/2024
+ * Last Updated: 9/17/2024
  */
 package cranstonm;
 

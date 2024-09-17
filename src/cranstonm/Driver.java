@@ -1,9 +1,9 @@
 /*
  * Course: CSC1020
  * Lab 2 - Exceptions
- * Die class
+ * Driver Class
  * Name: Megan Cranston
- * Last Updated: 9/12/2024
+ * Last Updated: 9/17/2024
  */
 package cranstonm;
 
@@ -13,7 +13,6 @@ import java.util.Scanner;
  * Class Driver
  */
 public class Driver {
-
     public static void main(String[] args) {
         int[] userInput = getInput();
         Die[] userDice = createDie(userInput[0], userInput[1]);
@@ -21,7 +20,6 @@ public class Driver {
         int largest = findMax(rollingDice);
         report(userInput[0], rollingDice, largest);
     }
-
     private static int[] getInput() {
         boolean validate = false;
         int[] intInput = new int[3];
@@ -63,7 +61,6 @@ public class Driver {
         } while (!validate);
         return intInput;
     }
-
     private static Die[] createDie(int numDice, int numSides) {
         Die[] dice = new Die[numDice];
         for (int i = 0; i < numDice; i++) {
@@ -71,7 +68,6 @@ public class Driver {
         }
         return dice;
     }
-
     private static int[] rollDice(Die[] dice, int numSides, int numRolls) {
         int[] value = new int[numSides*dice.length - (dice.length-1)];
         int total = 0;
@@ -84,7 +80,6 @@ public class Driver {
         }
         return value;
     }
-
     private static int findMax(int[] rolls) {
         int longest = rolls[0];
         for (int i = 0; i < rolls.length-1; i++) {
@@ -95,7 +90,6 @@ public class Driver {
         }
         return longest;
     }
-
     private static void report(int numDice, int[] rolls, int max) {
         final int scale = max/10;
         int numStars;
@@ -108,5 +102,4 @@ public class Driver {
             System.out.println();
         }
     }
-
 }
